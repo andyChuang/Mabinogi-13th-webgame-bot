@@ -130,7 +130,6 @@ def flower_lottery(driver, user):
     only_I_can_see_div = WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.XPATH, "//*[contains(text(), '只限本人')]"))
     )
-    #only_I_can_see_div = driver.execute_script("return $('div:contains(\"只限本人\")')[0]")
     only_I_can_see_div.click()
 
 
