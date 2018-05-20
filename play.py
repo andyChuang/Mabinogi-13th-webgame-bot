@@ -13,13 +13,14 @@ MABINOGI_URL = "https://event.beanfun.com/mabinogi/E20180517/index.aspx"
 
 def main(flow):
     driver_path = os.path.dirname(os.path.abspath(__file__)) + "/chromedriver"
-    users = utils.load_account("account.json")
 
     for user in users:
         driver = get_driver(driver_path)
         start_new_session(driver)
+        login(driver, user)
         for game in flow:
             game(driver, user)
+        log_out(driver)
         stop_session(driver)
 
 def start_new_session(driver):
@@ -33,7 +34,6 @@ def get_driver(driver_path):
     return driver
 
 def login(driver, user):
-    # Use dice game as login entry page
     login_entry = driver.execute_script("return $('a[href=\"Register.aspx\"]')[0]")
     login_entry.click()
     login_routine(driver, user)
@@ -63,6 +63,12 @@ def login_routine(driver, user):
             option.click()
             driver.find_element_by_id("btn_send_service_account").click()
             break
+
+def log_out(driver):
+    log_out_btn = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.ID, "i13"))
+    )
+    log_out_btn.click()
 
 def feed_plant(driver, user):
     # Find href
@@ -97,15 +103,63 @@ def flower_lottery(driver, user):
     )
     fb_share_btn.click()
 
+    window_before = driver.window_handles[0]
+    window_fb = driver.window_handles[1]
+    driver.switch_to_window(window_fb)
+
+    email_input = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.ID, "email"))
+    )
+    email_input.send_keys(fb_info["email"])
+
+    password_input = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.ID, "pass"))
+    )
+    password_input.send_keys(fb_info["password"])
+
+    fb_login_btn = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.ID, "u_0_0"))
+    )
+    fb_login_btn.click()
+
+    switch_who_can_see_btn = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.ID, "u_0_1t"))
+    )
+    switch_who_can_see_btn.click()
+
+    only_I_can_see_div = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.XPATH, "//*[contains(text(), '只限本人')]"))
+    )
+    #only_I_can_see_div = driver.execute_script("return $('div:contains(\"只限本人\")')[0]")
+    only_I_can_see_div.click()
+
+
+    publish_btn = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.ID, "u_0_1w"))
+    )
+    publish_btn.click()
+
+    driver.switch_to_window(window_before)
+
+    close_success_popup_btn = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.CLASS_NAME, "popup_close"))
+    )
+    close_success_popup_btn.click()
+
+    go_home_btn = driver.execute_script("return $('#f02 > img')[0]")
+    go_home_btn.click()
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Mabinogi 13th')
 
     args = parser.parse_args()
 
     game = {
-        "login": login,
         "feed_plant": feed_plant,
         "flower_lottery": flower_lottery
     }
 
-    main([game['login'], game['feed_plant']])
+    users = utils.load_json("account.json")
+    fb_info = utils.load_json("fb.json")
+
+    main([game['feed_plant'], game['flower_lottery']])
