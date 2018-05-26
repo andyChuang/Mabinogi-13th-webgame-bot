@@ -40,18 +40,22 @@
 ```
 5. 同目錄下建立`fb.json`：
 ```
+[
 {
 	"email": "fb帳號",
 	"password": "fb密碼"
 }
+]
 ```
-6. python play.py
+6. python play.py --cd _[[Waiting time between accounts in second]]_
 
 ## To-do
 1. FB分享活動 (Done)
 
 ## Change Log
-1.  2018.5.26: 修正 FB文章分享錯誤(FB又偷改網頁啦~)
+### 2018.5.26
+- 修正 FB文章分享錯誤(FB又偷改網頁啦~)
+- 加入切換帳號時的cd時間，可於啟動參數設定
 
 
 

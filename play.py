@@ -11,7 +11,7 @@ import utils
 
 MABINOGI_URL = "https://event.beanfun.com/mabinogi/E20180517/index.aspx"
 
-def main(flow):
+def main(flow, cd_time):
     driver_path = os.path.dirname(os.path.abspath(__file__)) + "/chromedriver"
 
     for user in users:
@@ -22,6 +22,7 @@ def main(flow):
             game(driver, user)
         log_out(driver)
         stop_session(driver)
+        time.sleep(cd_time)
 
 def start_new_session(driver):
     driver.get(MABINOGI_URL)
@@ -150,6 +151,7 @@ def flower_lottery(driver, user):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Mabinogi 13th')
+    parser.add_argument('--cd', dest='cd_time', default=0, help='Cd time between accounts (sec.)')
 
     args = parser.parse_args()
 
@@ -161,4 +163,8 @@ if __name__ == '__main__':
     users = utils.load_json("account.json")
     fb_info = utils.load_json("fb.json")
 
-    main([game['feed_plant'], game['flower_lottery']])
+    print '%s Mabinogi accounts and %s fb accounts' % (len(users), len(fb_info))
+    print fb_info
+    print 'Will wait %s seconds between accounts...' % args.cd_time
+
+    main([game['feed_plant'], game['flower_lottery']], args.cd_time)
