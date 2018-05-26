@@ -123,7 +123,7 @@ def flower_lottery(driver, user):
     fb_login_btn.click()
 
     switch_who_can_see_btn = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.ID, "u_0_1t"))
+        EC.presence_of_element_located((By.ID, "u_0_1s"))
     )
     switch_who_can_see_btn.click()
 
@@ -134,7 +134,7 @@ def flower_lottery(driver, user):
 
 
     publish_btn = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.ID, "u_0_1w"))
+        EC.presence_of_element_located((By.ID, "u_0_1v"))
     )
     publish_btn.click()
 
