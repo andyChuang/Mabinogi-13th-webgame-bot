@@ -111,12 +111,12 @@ def flower_lottery(driver, user):
     email_input = WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.ID, "email"))
     )
-    email_input.send_keys(fb_info["email"])
+    email_input.send_keys(fb_info[0]["email"])
 
     password_input = WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.ID, "pass"))
     )
-    password_input.send_keys(fb_info["password"])
+    password_input.send_keys(fb_info[0]["password"])
 
     fb_login_btn = WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.ID, "u_0_0"))
