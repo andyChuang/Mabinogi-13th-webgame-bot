@@ -47,7 +47,7 @@
 }
 ]
 ```
-6. python play.py --cd _[[Waiting time between accounts in second]]_
+6. python play.py --cd _[[Waiting time between accounts in second]]_ --ignore _[[Ignored accounts split by comma]]_
 
 ## To-do
 1. FB分享活動 (Done)
@@ -56,6 +56,8 @@
 ### 2018.5.26
 - 修正 FB文章分享錯誤(FB又偷改網頁啦~)
 - 加入切換帳號時的cd時間，可於啟動參數設定
+### 2018.6.11
+- Add `--ignore` parameter to ignore accounts in account.json for some purpose
 
 
 

@@ -149,9 +149,13 @@ def flower_lottery(driver, user):
     go_home_btn = driver.execute_script("return $('#f02 > img')[0]")
     go_home_btn.click()
 
+def filter_ignore_accounts(users, ignore_accts):
+    return [x for x in users if x['account'] not in ignore_accts]
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Mabinogi 13th')
     parser.add_argument('--cd', dest='cd_time', default=0, help='Cd time between accounts (sec.)')
+    parser.add_argument('--ignore', dest='ignore_accounts', help='Ignore these accounts in account.json, split by comma')
 
     args = parser.parse_args()
 
@@ -160,7 +164,7 @@ if __name__ == '__main__':
         "flower_lottery": flower_lottery
     }
 
-    users = utils.load_json("account.json")
+    users = filter_ignore_accounts(utils.load_json("account.json"), [x.strip() for x in args.ignore_accounts.split(',')])
     fb_info = utils.load_json("fb.json")
 
     print '%s Mabinogi accounts and %s fb accounts' % (len(users), len(fb_info))
