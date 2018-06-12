@@ -164,7 +164,9 @@ if __name__ == '__main__':
         "flower_lottery": flower_lottery
     }
 
-    users = filter_ignore_accounts(utils.load_json("account.json"), [x.strip() for x in args.ignore_accounts.split(',')])
+    users = utils.load_json("account.json")
+    if args.ignore_accounts is not None:
+        users = filter_ignore_accounts(users, [x.strip() for x in args.ignore_accounts.split(',')])
     fb_info = utils.load_json("fb.json")
 
     print '%s Mabinogi accounts and %s fb accounts' % (len(users), len(fb_info))
