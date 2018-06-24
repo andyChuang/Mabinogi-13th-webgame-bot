@@ -51,6 +51,8 @@
 
 ## To-do
 1. FB分享活動 (Done)
+2. 自動點選領獎
+3. 將獎品名單輸出或照某些次序排列
 
 ## Change Log
 ### 2018.5.26
@@ -58,6 +60,8 @@
 - 加入切換帳號時的cd時間，可於啟動參數設定
 ### 2018.6.11
 - Add `--ignore` parameter to ignore accounts in account.json for some purpose
+### 2018.6.24
+- Auto detect platform to support MacOS and Windows
 
 
 

@@ -8,11 +8,12 @@ from selenium.webdriver.support import expected_conditions as EC
 import random
 import time
 import utils
+import platform
 
 MABINOGI_URL = "https://event.beanfun.com/mabinogi/E20180517/index.aspx"
 
 def main(flow, cd_time):
-    driver_path = os.path.dirname(os.path.abspath(__file__)) + "/chromedriver"
+    driver_path = get_chrome_driver()
 
     for user in users:
         driver = get_driver(driver_path)
@@ -24,6 +25,15 @@ def main(flow, cd_time):
         stop_session(driver)
         time.sleep(cd_time)
 
+def get_chrome_driver():
+	driver_path = os.path.dirname(os.path.abspath(__file__)) + '/driver/'
+	if platform.system() == 'Windows':
+		return driver_path + "chromedriver.exe"
+	elif platform.system() == 'Darwin':
+		return driver_path + "chromedriver"
+	else:
+		raise Exception('Not supported os')
+		
 def start_new_session(driver):
     driver.get(MABINOGI_URL)
 
@@ -169,8 +179,8 @@ if __name__ == '__main__':
         users = filter_ignore_accounts(users, [x.strip() for x in args.ignore_accounts.split(',')])
     fb_info = utils.load_json("fb.json")
 
-    print '%s Mabinogi accounts and %s fb accounts' % (len(users), len(fb_info))
-    print fb_info
-    print 'Will wait %s seconds between accounts...' % args.cd_time
+    print('%s Mabinogi accounts and %s fb accounts' % (len(users), len(fb_info)))
+    print(fb_info)
+    print('Will wait %s seconds between accounts...' % args.cd_time)
 
     main([game['feed_plant'], game['flower_lottery']], args.cd_time)
